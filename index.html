@@ -33,14 +33,14 @@
     <nav class="bg-white shadow-lg">
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex justify-between items-center">
-                <div class="flex space-x-4">
+                <div class="flex space-x-4 px-28">
                     <!-- Logo -->
                     <div>
                         <a href="./index.html" class="flex items-center py-5 px-2 text-gray-700">
                             <!-- <svg class="h-6 w-6 mr-1 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a9.9 9.9 0 0110 10A9.9 9.9 0 0112 22 9.9 9.9 0 012 12 9.9 9.9 0 0112 2z" />
                             </svg> -->
-                            <span class="font-bold"><img src="./src/logo.png" alt=""></span>
+                            <span class="font-bold"><img src="./src/logo.png" alt="" class="w-28"></span>
                         </a>
                     </div>
                     <!-- Primary Navbar items -->
@@ -78,7 +78,7 @@
     <div class="content max-w-6xl mx-auto mt-8">
         <!-- Search Bar -->
         <div class="flex justify-end w-full mb-6">
-            <input type="text" placeholder="Search by name or zipcode..." class="px-4 py-2 border rounded-l-md focus:outline-none" id="search-input">
+            <input type="text" placeholder="Search by City, Name, or Zip Code" class="px-4 py-2 border rounded-l-md focus:outline-none w-80" id="search-input"  onkeydown="searchkey(event)">
             <button class="px-4 py-2 bg-blue-500 text-white rounded-r-md hover:bg-blue-400" onclick="filterAgents()">Search</button>
         </div>
         
@@ -114,6 +114,7 @@
                 dre: "DRE#1402383",
                 role: "Pivot Real Estate",
                 zipcode: ['92027', '92026', '92025'],
+                area:['Escondido'],
                 profileLink: "./benny-charles/index.html"
             },
             {
@@ -127,6 +128,7 @@
                 dre: "DRE#01913437",
                 role: "Pivot Real Estate",
                 zipcode: ["92104", "92105", "92106"],
+                area:[''],
                 profileLink: "./derek-lundgren/index.html"
             },
             {
@@ -140,6 +142,7 @@
                 dre: "DRE#02012350",
                 role: "Pivot Real Estate",
                 zipcode: ["91932", "91933", "92154"],
+                area: ['Imperial Beach'],
                 profileLink: "./jay-johnson/index.html"
             },
             {
@@ -153,6 +156,7 @@
                 dre: "DRE#02000045",
                 role: "Pivot Real Estate",
                 zipcode: ["92116"],
+                area: ['Kensington', 'Los Angeles'],
                 profileLink: "./asad-linden/index.html"
             },
             {
@@ -166,6 +170,7 @@
                 dre: "DRE#01991639",
                 role: "Pivot Real Estate",
                 zipcode: [""],
+                area:[""],
                 profileLink: "./matt-huneycutt/index.html"
             },
             {
@@ -179,6 +184,7 @@
                 dre: "DRE#01861996",
                 role: "Pivot Real Estate",
                 zipcode: ["91941",'91977','91976','91902','91910'],
+                area:['La Mesa', 'Spring Valley', 'Chula Vista'],
                 profileLink: "./christina-rounds/index.html"
             }
         ];
@@ -208,18 +214,26 @@
         }
 
         function filterAgents() {
-            const query = document.getElementById('search-input').value.toLowerCase();
-            const container = document.getElementById('agent-container');
-            container.innerHTML = '';
+    const query = document.getElementById('search-input').value.toLowerCase();
+    const container = document.getElementById('agent-container');
+    container.innerHTML = '';
 
-            const filteredAgents = agents.filter(agent => 
-                agent.name.toLowerCase().includes(query) || 
-                agent.zipcode.some(zip => zip.includes(query))
-            );
+    const filteredAgents = agents.filter(agent => 
+        agent.name.toLowerCase().includes(query) || 
+        agent.zipcode.some(zip => zip.includes(query)) ||
+        agent.area.some(area => area.toLowerCase().includes(query))
+    );
 
-            filteredAgents.forEach(agent => {
-                container.innerHTML += createAgentCard(agent);
-            });
+    filteredAgents.forEach(agent => {
+        container.innerHTML += createAgentCard(agent);
+    });
+}
+
+        function searchkey(e){
+            if (e.keyCode == 13){
+                filterAgents();
+                
+            }
         }
 
         // Initial load
