@@ -25,6 +25,30 @@
             background-color: white;
             box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1);
         }
+        .hidden {
+            display: none;
+        }
+        .visible {
+            display: block;
+        }
+        .modal-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -37,9 +61,6 @@
                     <!-- Logo -->
                     <div>
                         <a href="./index.html" class="flex items-center py-5 px-2 text-gray-700">
-                            <!-- <svg class="h-6 w-6 mr-1 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a9.9 9.9 0 0110 10A9.9 9.9 0 0112 22 9.9 9.9 0 012 12 9.9 9.9 0 0112 2z" />
-                            </svg> -->
                             <span class="font-bold"><img src="./src/logo.png" alt="" class="w-28"></span>
                         </a>
                     </div>
@@ -48,7 +69,7 @@
                         <a href="#" class="py-5 px-3 text-gray-700 hover:text-gray-900">Home</a>
                         <a href="#" class="py-5 px-3 text-gray-700 hover:text-gray-900">About</a>
                         <a href="#" class="py-5 px-3 text-gray-700 hover:text-gray-900">Services</a>
-                        <a href="#" class="py-5 px-3 text-gray-700 hover:text-gray-900">Contact</a>
+                        <a href="#" class="py-5 px-3 text-gray-700 hover:text-gray-900" id="contact-link">Contact</a>
                     </div>
                 </div>
                 <!-- Mobile menu button -->
@@ -78,7 +99,7 @@
     <div class="content max-w-6xl mx-auto mt-8">
         <!-- Search Bar -->
         <div class="flex justify-end w-full mb-6">
-            <input type="text" placeholder="Search by City, Name, or Zip Code" class="px-4 py-2 border rounded-l-md focus:outline-none w-80" id="search-input"  onkeydown="searchkey(event)">
+            <input type="text" placeholder="Search by City, Name, or Zip Code" class="px-4 py-2 border rounded-l-md focus:outline-none w-80" id="search-input" onkeydown="searchkey(event)">
             <button class="px-4 py-2 bg-blue-500 text-white rounded-r-md hover:bg-blue-400" onclick="filterAgents()">Search</button>
         </div>
         
@@ -101,7 +122,39 @@
         </div>
     </footer>
 
+    <!-- Contact Form Modal -->
+    <div id="contact-modal" class="invisible modal-bg ">
+        <div class="modal">
+            <h2 id="agentnamedisp" class="text-lg font-bold mb-4"></h2>
+            <form id="contact-form">
+                <div class="mb-4">
+                    <label for="first-name" class="block text-sm font-medium text-gray-700">First Name</label>
+                    <input type="text" id="first-name" name="first-name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+                <div class="mb-4">
+                    <label for="last-name" class="block text-sm font-medium text-gray-700">Last Name</label>
+                    <input type="text" id="last-name" name="last-name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="email" name="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+                <div class="mb-4">
+                    <label for="contactno" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                    <input type="text" id="contactno" name="contact-number" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+
+                </div>
+                <div class="flex justify-end">
+                    <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded mr-2" onclick="toggleModal()">Cancel</button>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
+        var pickedagent='';
+
         const agents = [
             {
                 name: "Benny Charles",
@@ -191,12 +244,12 @@
 
         function createAgentCard(agent) {
             return `
-                <div class="agent-card bg-white shadow-lg rounded-lg p-4 cursor-pointer" onclick="window.location.href='${agent.profileLink}'">
-                    <div class="relative">
+                <div class="agent-card bg-white shadow-lg rounded-lg p-4 cursor-pointer">
+                    <div class="relative" onclick="window.location.href='${agent.profileLink}'">
                         <img class="w-full h-48 object-cover rounded-t-lg" src="${agent.image}" alt="${agent.name}">
                         <div class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">${agent.role}</div>
                     </div>
-                    <div class="p-4">
+                    <div class="p-4" onclick="window.location.href='${agent.profileLink}'">
                         <h2 class="text-lg font-bold">${agent.name}</h2>
                         <div class="text-gray-600">${agent.phone}</div>
                         <div class="flex items-center mt-2">
@@ -209,30 +262,32 @@
                         </div>
                         <div class="text-gray-500 mt-2">${agent.dre}</div>
                     </div>
+                    <div class='grid'>
+                        <a class='text-white bg-red-400 justify-self-center px-6 py-2 rounded-sm shadow-md' onclick="toggleModal('${agent.name}','${agent.dre}')">
+                            Contact
+                        </a>
+                    </div>
                 </div>
             `;
         }
 
         function filterAgents() {
-    const query = document.getElementById('search-input').value.toLowerCase();
-    const container = document.getElementById('agent-container');
-    container.innerHTML = '';
-
-    const filteredAgents = agents.filter(agent => 
-        agent.name.toLowerCase().includes(query) || 
-        agent.zipcode.some(zip => zip.includes(query)) ||
-        agent.area.some(area => area.toLowerCase().includes(query))
-    );
-
-    filteredAgents.forEach(agent => {
-        container.innerHTML += createAgentCard(agent);
-    });
-}
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const container = document.getElementById('agent-container');
+            container.innerHTML = '';
+            const filteredAgents = agents.filter(agent => 
+                agent.name.toLowerCase().includes(query) || 
+                agent.zipcode.some(zip => zip.includes(query)) ||
+                agent.area.some(area => area.toLowerCase().includes(query))
+            );
+            filteredAgents.forEach(agent => {
+                container.innerHTML += createAgentCard(agent);
+            });
+        }
 
         function searchkey(e){
             if (e.keyCode == 13){
                 filterAgents();
-                
             }
         }
 
@@ -241,6 +296,36 @@
 
         // For mobile search functionality
         document.getElementById('search-input-mobile').addEventListener('input', filterAgents);
+
+        // Toggle modal visibility
+        function toggleModal(a,b) {
+            pickedagent = b;
+            console.log(pickedagent)
+            document.getElementById("agentnamedisp").innerHTML = "Contact "+ a;
+            const modal = document.getElementById('contact-modal');
+            if (modal.classList.contains('invisible')) {
+                modal.classList.remove('invisible');
+                modal.classList.add('visible');
+            } else {
+                modal.classList.add('invisible');
+                modal.classList.remove('visible');
+            }
+        }
+
+        // Handle contact link click
+        document.getElementById('contact-link').addEventListener('click', function(event) {
+            event.preventDefault();
+            toggleModal();
+        });
+
+        // Handle form submission
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            alert('Form submitted!');
+            toggleModal();
+        });
+
+       
     </script>
 
 </body>
