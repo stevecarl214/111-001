@@ -6,6 +6,11 @@
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
     <title>Barret Financial Group</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"></script>
     <style>
         body, html {
             height: 100%;
@@ -126,7 +131,7 @@
     <div id="contact-modal" class="invisible modal-bg ">
         <div class="modal">
             <h2 id="agentnamedisp" class="text-lg font-bold mb-4"></h2>
-            <form id="contact-form">
+            <form id="contact-form" onsubmit="sendinfo()">
                 <div class="mb-4">
                     <label for="first-name" class="block text-sm font-medium text-gray-700">First Name</label>
                     <input type="text" id="first-name" name="first-name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
@@ -154,7 +159,7 @@
 
     <script>
         var pickedagent='';
-
+       
         const agents = [
             {
                 name: "Benny Charles",
@@ -299,7 +304,7 @@
 
         // Toggle modal visibility
         function toggleModal(a,b) {
-            pickedagent = b;
+            pickedagent = a;
             console.log(pickedagent)
             document.getElementById("agentnamedisp").innerHTML = "Contact "+ a;
             const modal = document.getElementById('contact-modal');
@@ -321,9 +326,31 @@
         // Handle form submission
         document.getElementById('contact-form').addEventListener('submit', function(event) {
             event.preventDefault();
-            alert('Form submitted!');
+            
             toggleModal();
         });
+
+        function sendinfo(){
+            var email = document.getElementById("email").value;
+            var fname =  document.getElementById("first-name").value;
+            var lname =  document.getElementById("first-name").value;
+            var contactno =  document.getElementById("contactno").value;
+             var agentname =  pickedagent;
+   var settings = {
+  "url": "https://hooks.zapier.com/hooks/catch/9186880/2y9lk4h/?email="+email+"&first_name="+fname+"&last_name="+lname+"&contact_no="+contactno+"&agent="+agentname,
+  "method": "POST",
+  "timeout": 0,
+};
+
+$.ajax(settings).done(function (response) {
+  Swal.fire({
+  title: "Form Submitted!",
+  text: "An agent will be in contact with you!",
+  icon: "success"
+});
+});
+
+        }
 
        
     </script>
