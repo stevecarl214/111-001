@@ -6,8 +6,13 @@
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <title>Profile - Asad Linden</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"></script>
     <style>
-        body, html {
+         body, html {
             height: 100%;
             margin: 0;
             display: flex;
@@ -33,6 +38,12 @@
             max-width: 800px;
             width: 100%;
             text-align: center;
+            position: relative; /* Added to make the link's absolute position work */
+        }
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
         }
         .profile-card img {
             border-radius: 50%;
@@ -42,6 +53,59 @@
         }
         .details, .about-me {
             margin: 20px 0;
+        }
+        .team-section {
+            margin-top: 50px;
+            text-align: center;
+        }
+        .team-members {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .team-member {
+            margin: 10px;
+            text-align: center;
+        }
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+        }
+        .contact-form {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+        }
+        .contact-form .form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        .contact-form .form input, .contact-form .form textarea, .contact-form .form button {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .contact-form .form button {
+            background-color: #00324b;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .contact-form .form button:hover {
+            background-color: #0c384e;
+        }
+        .contact-form .agent-photo {
+            margin-left: 20px;
+        }
+        .contact-form .agent-photo img {
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -96,6 +160,7 @@
     <div class="content">
         <!-- Profile Card -->
         <div class="profile-card">
+            <a href="../index.html" class="back-link text-blue-500 hover:underline">&larr; Back to Agents</a>
             <img src="../src/AsadLinden.jpg" alt="Asad Linden">
             <h1 class="text-2xl font-bold">Asad Linden</h1>
             <p class="text-gray-600">Pivot Real Estate</p>
@@ -113,8 +178,26 @@
                 <p>With over eight years of experience in the real estate industry, I am a passionate and dedicated professional who offers superior service to my clients. Whether they are buying or selling residential, income, or development properties, I provide them with knowledgeable, effective, and personalized guidance throughout the process. As a GREEN certified agent, I have the expertise and resources to help my clients make informed and sustainable decisions about their real estate investments. I have a great area familiarity and national connections, which enable me to share valuable insights with them about the unique features and nuances of Southern California neighborhoods and opportunities. I am proud to be part of REAL Brokerage, a leading and innovative company that empowers agents and clients with cutting-edge technology and support.</p>
                 <p class="mt-4">Meet _name's_ team</p>
             </div>
+            <div class="contact-form" >
+                <div class="form">
+                    <h2 class="text-xl font-bold mb-4">ASK ASAD A QUESTION</h2>
+                    <input type="text" placeholder="First Name" id="first-name" required>
+                    <input type="text" placeholder="Last Name" id="last-name" required>
+                    <input type="email" placeholder="Email" id="email" required>
+                    <input type="tel" placeholder="Phone" id="contactno" required>
+                    
+                    
+                    <button onclick="sendinfo()">Contact Asad</button>
+                    <p class="text-gray-600 text-sm">You are creating a contact request and agree to our Terms of Use and Privacy Policy.</p>
+                </div>
+                
+            </div>
         </div>
+        <h1 class="text-2xl mt-8 mb-4">Reviews and Comments</h1>
+        <iframe src='https://widgets.sociablekit.com/google-reviews/iframe/25422851' frameborder='0' width='90%' height='500px'></iframe>
     </div>
+
+   
 
     <!-- Footer -->
     <footer class="footer bg-white shadow-lg mt-8">
@@ -128,6 +211,34 @@
             </div>
         </div>
     </footer>
+    <script>
+        function sendinfo(){
+            var email = document.getElementById("email").value;
+            var fname =  document.getElementById("first-name").value;
+            var lname =  document.getElementById("last-name").value;
+            var contactno =  document.getElementById("contactno").value;
+             var agentname =  "Asad Linden";
+   var settings = {
+  "url": "https://hooks.zapier.com/hooks/catch/9186880/2y9lk4h/?email="+email+"&first_name="+fname+"&last_name="+lname+"&contact_no="+contactno+"&agent="+agentname,
+  "method": "POST",
+  "timeout": 0,
+};
+
+$.ajax(settings).done(function (response) {
+  Swal.fire({
+  title: "Form Submitted!",
+  text: "An agent will be in contact with you!",
+  icon: "success"
+});
+document.getElementById("email").value = "" ;
+document.getElementById("first-name").value = "";
+document.getElementById("last-name").value = "";
+document.getElementById("contactno").value =  "";
+});
+
+        }
+    </script>
+
 
 </body>
 </html>
