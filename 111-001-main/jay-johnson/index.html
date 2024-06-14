@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <title>Profile - Jay Johnson</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"></script>
+    <style>
+         body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+        }
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+        .profile-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            position: relative; /* Added to make the link's absolute position work */
+        }
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+        .profile-card img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            margin-bottom: 20px;
+        }
+        .details, .about-me {
+            margin: 20px 0;
+        }
+        .team-section {
+            margin-top: 50px;
+            text-align: center;
+        }
+        .team-members {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .team-member {
+            margin: 10px;
+            text-align: center;
+        }
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+        }
+        .contact-form {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+        }
+        .contact-form .form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        .contact-form .form input, .contact-form .form textarea, .contact-form .form button {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .contact-form .form button {
+            background-color: #00324b;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .contact-form .form button:hover {
+            background-color: #0c384e;
+        }
+        .contact-form .agent-photo {
+            margin-left: 20px;
+        }
+        .contact-form .agent-photo img {
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center">
+                <div class="flex space-x-4 px-28">
+                    <!-- Logo -->
+                    <div>
+                        <a href="../index.html" class="flex items-center py-5 px-2 text-gray-700">
+                            <span class="font-bold"><img src="../src/logo.png" alt="Company Logo" class="w-28"></span>
+                        </a>
+                    </div>
+                    <!-- Primary Navbar items -->
+                    <div class="hidden md:flex items-center space-x-1">
+                        <a href="#" class="py-5 px-3 text-gray-700 hover:text-gray-900">Home</a>
+                        <a href="#" class="py-5 px-3 text-gray-700 hover:text-gray-900">About</a>
+                        <a href="#" class="py-5 px-3 text-gray-700 hover:text-gray-900">Services</a>
+                        <a href="#" class="py-5 px-3 text-gray-700 hover:text-gray-900">Contact</a>
+                    </div>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button class="mobile-menu-button">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="mobile-menu hidden md:hidden">
+            <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-200">Home</a>
+            <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-200">About</a>
+            <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-200">Services</a>
+            <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-200">Contact</a>
+            <div class="px-4 py-2">
+                <input type="text" placeholder="Search..." class="w-full px-4 py-2 border rounded-l-md focus:outline-none" id="search-input-mobile">
+                <button class="w-full px-4 py-2 mt-2 bg-blue-500 text-white rounded hover:bg-blue-400" onclick="filterAgents()">Search</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Profile Card -->
+        <div class="profile-card">
+            <a href="../index.html" class="back-link text-blue-500 hover:underline">&larr; Back to Agents</a>
+            <img src="../src/JayJohnson.jpeg" alt="Jay Johnson">
+            <h1 class="text-2xl font-bold">Jay Johnson</h1>
+            <p class="text-gray-600">Pivot Real Estate</p>
+
+            <!-- Details Section -->
+            <div class="details text-left">
+                <p><strong>DRE/License:</strong> 02012350</p>
+                <p><strong>Deals:</strong> Jared will provide this</p>
+                <p><strong>Area Expert:</strong> Imperial Beach (91932, 91933, 92154)</p>
+            </div>
+
+            <!-- About Me Section -->
+            <div class="about-me text-left">
+                <h2 class="text-xl font-bold mb-4">About</h2>
+                <p>Jay has a unique experience with Landing Collective Real Estate Solutions. After more than 26 years as a Navy Search and Rescue Aircrewman and Real Estate experience since 1994, he is someone that both military and civilian families alike can count on. Having personally owned homes and rental properties in multiple states, Jay can navigate you through the purchase of investment properties as well as your dream home. Clients especially love relying on Jay’s special personal and professional experience as a certified Military Relocation Professional who has endured many moves himself, both domestic and internationally. With a successful track record relocating clients worldwide from Bahrain, Italy, Guam, Japan to back home in the United States, you can be confident of your next move with Jay and the Landing Collective team by your side.</p>
+                <p class="mt-4">Meet the Landing Collective Team: <a href="https://www.landingcollective.com/team-page" class="text-blue-500 hover:underline">https://www.landingcollective.com/team-page</a></p>
+            </div>
+            <!-- Team Section -->
+            <div class="team-section">
+                <h2 class="text-2xl font-bold">Meet Jay's Team</h2>
+                <p>When you work with us, one agent is responsible for your success, but you really get a whole team. Redfin agents work closely with a team of real estate professionals to ensure every sale closes without a hitch</p>
+                <div id="team-members" class="team-members"></div>
+            </div>
+
+              <!-- Contact Form Section -->
+              <div class="contact-form" >
+                <div class="form">
+                    <h2 class="text-xl font-bold mb-4">ASK JAY A QUESTION</h2>
+                    <input type="text" placeholder="First Name" id="first-name" required>
+                    <input type="text" placeholder="Last Name" id="last-name" required>
+                    <input type="email" placeholder="Email" id="email" required>
+                    <input type="tel" placeholder="Phone" id="contactno" required>
+                    
+                    
+                    <button onclick="sendinfo()">Contact Jay</button>
+                    <p class="text-gray-600 text-sm">You are creating a contact request and agree to our Terms of Use and Privacy Policy.</p>
+                </div>
+                
+            </div>
+        </div>
+        <h1 class="text-2xl mt-8 mb-4">Jay Johnson's Deals</h1>
+        <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1H6KSJ-_g0SxqJgpBZyFHwgcYxmTYyXc&ehbc=2E312F&noprof=1" width="640" height="480"></iframe>
+        <h1 class="text-2xl mt-8 mb-4">Reviews and Comments</h1>
+        <iframe src='https://widgets.sociablekit.com/google-reviews/iframe/25422857' frameborder='0' width='90%' height='500px'></iframe>
+    </div>
+   
+
+    <!-- Footer -->
+    <footer class="footer bg-white shadow-lg mt-8">
+        <div class="max-w-6xl mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <p class="text-gray-600">© 2023 MyWebsite. All rights reserved.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-600 hover:text-gray-900">Privacy Policy</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const btn = document.querySelector(".mobile-menu-button");
+        const menu = document.querySelector(".mobile-menu");
+
+        btn.addEventListener("click", () => {
+            menu.classList.toggle("hidden");
+        });
+
+        // Placeholder function for search
+        function filterAgents() {
+            console.log("Search functionality not implemented yet.");
+        }
+
+        // Team members data
+        const teamMembers = [
+            {
+                name: "Maya Muilenburg",
+                title: "Transaction Coordinator",
+                image: "./member-images/MayaMuilenburg.jpg"
+            },
+            {
+                name: "Nicole Farquar",
+                title: "Real Estate Advisor",
+                image: "./member-images/NicoleFarquar.jpg"
+            },
+            {
+                name: "Anthony Magana",
+                title: "Showing Agent",
+                image: "./member-images/AnthonyMagana.jpg"
+            },
+           
+        ];
+        function sendinfo(){
+            var email = document.getElementById("email").value;
+            var fname =  document.getElementById("first-name").value;
+            var lname =  document.getElementById("last-name").value;
+            var contactno =  document.getElementById("contactno").value;
+             var agentname =  "Jay Johnson";
+   var settings = {
+  "url": "https://hooks.zapier.com/hooks/catch/9186880/2y9lk4h/?email="+email+"&first_name="+fname+"&last_name="+lname+"&contact_no="+contactno+"&agent="+agentname,
+  "method": "POST",
+  "timeout": 0,
+};
+
+$.ajax(settings).done(function (response) {
+  Swal.fire({
+  title: "Form Submitted!",
+  text: "An agent will be in contact with you!",
+  icon: "success"
+});
+document.getElementById("email").value = "" ;
+document.getElementById("first-name").value = "";
+document.getElementById("last-name").value = "";
+document.getElementById("contactno").value =  "";
+});
+
+        }
+
+        // Render team members
+        const teamMembersContainer = document.getElementById("team-members");
+        teamMembers.forEach(member => {
+            const memberDiv = document.createElement("div");
+            memberDiv.classList.add("team-member");
+            memberDiv.innerHTML = `
+                <img src="${member.image}" alt="${member.name}">
+                <h3 class="text-xl font-bold mt-2">${member.name}</h3>
+                <p class="text-gray-600">${member.title}</p>
+            `;
+            teamMembersContainer.appendChild(memberDiv);
+        });
+    </script>
+</body>
+</html>
